@@ -21,7 +21,10 @@ class Soundpool {
         _maxStreams = maxStreams;
 
   /// Creates the Soundpool instance with stream type setting set.
-  /// Soundpool can play up to [maxStreams] of simultaneous streams
+  /// Soundpool can play up to [maxStreams] of simultaneous streams.
+  /// 
+  /// ## web
+  /// Neither of parameters works and they are ignored.
   factory Soundpool(
       {StreamType streamType = StreamType.music, int maxStreams = 1}) {
     return Soundpool._(streamType, maxStreams).._connect();
@@ -34,6 +37,9 @@ class Soundpool {
   /// ```
   ///
   /// Returns soundId for future use in [play] (soundId > -1)
+  /// 
+  /// ## web
+  /// [priority] is ignored.
   Future<int> load(ByteData rawSound,
           {int priority = _DEFAULT_SOUND_PRIORITY}) =>
       loadUint8List(rawSound.buffer.asUint8List(), priority: priority);
@@ -43,6 +49,9 @@ class Soundpool {
   /// Loads sound data and buffers it for future playing.
   ///
   /// Returns soundId for future use in [play] (soundId > -1)
+  /// 
+  /// ## web
+  /// [priority] is ignored.
   Future<int> loadUint8List(Uint8List rawSound,
       {int priority = _DEFAULT_SOUND_PRIORITY}) async {
     assert(!_disposed, "Soundpool instance was already disposed");
@@ -56,6 +65,9 @@ class Soundpool {
   ///
   /// Loads sound data from file pointed by [uri]
   /// Returns soundId for future use in [play] (soundId > -1)
+  /// 
+  /// ## web
+  /// [priority] is ignored.
   Future<int> loadUri(String uri,
       {int priority = _DEFAULT_SOUND_PRIORITY}) async {
     assert(!_disposed, "Soundpool instance was already disposed");
@@ -76,6 +88,9 @@ class Soundpool {
   /// See also:
   ///
   /// * [load], which allows for precaching the sound data
+  /// 
+  /// ## web
+  /// [priority] and [repeat] are ignored. The sound is played only once.
   Future<int> loadAndPlay(ByteData rawSound,
       {int priority = _DEFAULT_SOUND_PRIORITY, int repeat = 0}) async {
     int soundId = await load(rawSound, priority: priority);
@@ -93,6 +108,9 @@ class Soundpool {
   /// See also:
   ///
   /// * [loadUint8List], which allows for precaching the sound data
+  /// 
+  /// ## web
+  /// [priority] and [repeat] are ignored. The sound is played only once.
   Future<int> loadAndPlayUint8List(Uint8List rawSound,
       {int priority = _DEFAULT_SOUND_PRIORITY, int repeat = 0}) async {
     assert(!_disposed, "Soundpool instance was already disposed");
@@ -112,6 +130,9 @@ class Soundpool {
   /// See also:
   ///
   /// * [loadUri], which allows for precaching the sound data
+  /// 
+  /// ## web
+  /// [priority] and [repeat] are ignored. The sound is played only once.
   Future<int> loadAndPlayUri(String uri,
       {int priority = _DEFAULT_SOUND_PRIORITY, int repeat = 0}) async {
     assert(!_disposed, "Soundpool instance was already disposed");
@@ -126,6 +147,9 @@ class Soundpool {
   ///
   /// Returns streamId to further control playback or 0 if playing failed to
   /// start
+  /// 
+  /// ## web
+  /// [repeat] is ignored. The sound is played only once.
   Future<int> play(int soundId, {int repeat = 0}) async {
     assert(!_disposed, "Soundpool instance was already disposed");
     int poolId = await _soundpoolId.future;
@@ -137,6 +161,9 @@ class Soundpool {
   /// Starts playing the sound identified by [soundId].
   ///
   /// Returns instance to control playback
+  /// 
+  /// ## web
+  /// [repeat] is ignored. The sound is played only once.
   Future<AudioStreamControl> playWithControls(int soundId,
       {int repeat = 0}) async {
     final streamId = await play(soundId, repeat: repeat);
@@ -157,7 +184,8 @@ class Soundpool {
 
   /// Pauses playing sound identified by [streamId]
   ///
-  ///
+  /// ## web
+  /// *DOES NOT WORK!*.
   Future<void> pause(int streamId) async {
     assert(!_disposed, "Soundpool instance was already disposed");
     int poolId = await _soundpoolId.future;
@@ -169,7 +197,8 @@ class Soundpool {
 
   /// Resumes playing sound identified by [streamId]
   ///
-  ///
+  /// ## web
+  /// *DOES NOT WORK!*.
   Future<void> resume(int streamId) async {
     assert(!_disposed, "Soundpool instance was already disposed");
     int poolId = await _soundpoolId.future;
@@ -182,6 +211,9 @@ class Soundpool {
   /// Sets volume for playing sound identified by [soundId] or [streamId]
   ///
   /// At least [volume] or both [volumeLeft] and [volumeRight] have to be passed
+  /// 
+  /// ## web
+  /// [volumeLeft] and [volumeRight] pair has no effect.
   Future setVolume(
       {int soundId,
       int streamId,
