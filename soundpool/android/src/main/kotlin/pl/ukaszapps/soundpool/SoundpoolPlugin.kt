@@ -53,6 +53,7 @@ class SoundpoolPlugin(context: Context) : MethodCallHandler {
                     1 -> AudioManager.STREAM_ALARM
                     2 -> AudioManager.STREAM_MUSIC
                     3 -> AudioManager.STREAM_NOTIFICATION
+                    4 -> AudioManager.STREAM_VOICE_CALL
                     else -> -1
                 }
                 if (streamType > -1) {
@@ -104,6 +105,7 @@ internal class SoundpoolWrapper(private val context: Context, private val maxStr
             AudioManager.STREAM_RING -> AudioAttributes.USAGE_NOTIFICATION_RINGTONE
             AudioManager.STREAM_ALARM -> android.media.AudioAttributes.USAGE_ALARM
             AudioManager.STREAM_NOTIFICATION -> android.media.AudioAttributes.USAGE_NOTIFICATION
+            AudioManager.STREAM_VOICE_CALL -> AudioAttributes.USAGE_VOICE_COMMUNICATION
             else -> android.media.AudioAttributes.USAGE_GAME
         }
         SoundPool.Builder()

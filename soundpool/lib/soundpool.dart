@@ -311,7 +311,10 @@ enum StreamType {
   music,
 
   /// Audio stream for notifications
-  notification
+  notification,
+
+  /// Audio stream for ringback tones/early media (ear speaker)
+  voice_call
 }
 
 /// Controls for played sound
